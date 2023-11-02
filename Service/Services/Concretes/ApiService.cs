@@ -35,33 +35,18 @@ namespace Service.Services.Concretes
 
                     foreach (var item in timeSeries)
                     {
-                        string dateTime = item.Key;
                         JObject values = (JObject)item.Value;
-
-                        float open = float.Parse(values["1. open"].ToString());
-                        float high = float.Parse(values["2. high"].ToString());
-                        float low = float.Parse(values["3. low"].ToString());
-                        float close = float.Parse(values["4. close"].ToString());
-                        float volume = float.Parse(values["5. volume"].ToString());
-
-                        DateTime parsedDateTime = DateTime.ParseExact(dateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-
                         Price price = new Price
                         {
-                            open = open,
-                            high = high,
-                            low = low,
-                            close = close,
-                            volume = volume,
-                            DateTime = parsedDateTime
+                            open = float.Parse(values["1. open"].ToString()),
+                            high = float.Parse(values["2. high"].ToString()),
+                            low = float.Parse(values["3. low"].ToString()),
+                            close = float.Parse(values["4. close"].ToString()),
+                            volume = float.Parse(values["5. volume"].ToString()),
+                            DateTime = DateTime.ParseExact(item.Key, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                         };
-
                         await priceService.AddPrice(price);
-
                     }
-
-                   // Console.WriteLine(data["Time Series (5min)"]["2023-11-01 19:55:00"]["4. close"]);
-
                 }
                 else
                 {
